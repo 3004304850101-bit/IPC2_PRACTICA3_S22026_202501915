@@ -1,0 +1,293 @@
+@model MascotaFormViewModel?
+@{
+    ViewData["Title"] = "Inicio";
+}
+@if (TempData["Mensaje"] != null)
+{
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+        <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
+            @TempData["Mensaje"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+        <div class="alert alert-danger alert-dismissible fade show shadow" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    </div>
+}
+<div class="row g-4">
+    <div class="col-12 col-md-6">
+        <h3 class="mb-3">REGISTRAR MASCOTA</h3>
+
+        <form asp-controller="Home" asp-action="Registrar" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Seleccionar tipo Mascota</label>
+                <select class="form-select" id="tipoReg" name="Tipo">
+                    <option value="" selected disabled>AVE, GATO, PERRO o TORTUGA</option>
+                    <option value="Ave">Ave</option>
+                    <option value="Gato">Gato</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Tortuga">Tortuga</option>
+                </select>
+            </div>
+
+            <div id="comunes" class="d-none">
+                <div class="mb-3">
+                    <label class="form-label" >Nombre</label>
+                    <input type="text" class="form-control" name="Nombre" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" >Peso</label>
+                    <input type="number" step="0.01" class="form-control" name="Peso" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label d-block">Sexo</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="F" name="Sexo" required>
+                        <label class="form-check-label">F</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="M" name="Sexo">
+                        <label class="form-check-label">M</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Edad</label>
+                    <input type="number" class="form-control" name="Edad" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Propietario</label>
+                    <input type="text" class="form-control" name="Propietario" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label d-block">Salud</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="true" name="Salud" required>
+                        <label class="form-check-label">+</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="false" name="Salud">
+                        <label class="form-check-label">-</label>
+                    </div>
+                </div>
+
+                
+                <div class="campo-dinamico-Reg d-none" data-tipo="Ave">
+                    <div class="mb-3">
+                        <label class="form-label">Especie</label>
+                        <input type="text" class="form-control" name="Especie" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Color</label>
+                        <input type="text" class="form-control" name="Color" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Envergadura</label>
+                        <input type="text" class="form-control" name="Envergadura" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label d-block">Puede volar?</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"  value="true" name="PuedeVolar" required>
+                            <label class="form-check-label">Sí</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="false" name="PuedeVolar">
+                            <label class="form-check-label">No</label>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <div class="campo-dinamico-Reg d-none" data-tipo="Gato">
+                    <div class="mb-3">
+                        <label class="form-label">Raza</label>
+                        <input type="text" class="form-control" name="Raza">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Color</label>
+                        <input type="text" class="form-control" name="Color">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label d-block">Esterilizado?</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="true" name="Esterilizado" required>
+                            <label class="form-check-label">Sí</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio"  value="false" name="Esterilizada">
+                            <label class="form-check-label">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="campo-dinamico-Reg d-none" data-tipo="Perro">
+                    <div class="mb-3">
+                        <label class="form-label">Raza</label>
+                        <input type="text" class="form-control" name="Raza" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tamaño</label>
+                        <input type="text" class="form-control" name="Tamano" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Color</label>
+                        <input type="text" class="form-control" name="Color" required>
+                    </div>
+                </div>
+
+                
+                <div class="campo-dinamico-Reg d-none" data-tipo="Tortuga">
+                    <div class="mb-3">
+                        <label class="form-label">Especie</label>
+                        <input type="text" class="form-control" name="Especie" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Color</label>
+                        <input type="text" class="form-control" name="Color" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label d-block">Acuático?</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="true" name="Acuatico" required>
+                            <label class="form-check-label" >Sí</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="false" name="Acuatico">
+                            <label class="form-check-label" >No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">REGISTRAR</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-12 col-md-6">
+        <h3 class="mb-3">ACTUALIZAR MASCOTA</h3>
+
+            <div class="mb-3">
+                <label class="form-label">Seleccionar tipo Mascota</label>
+                <form asp-action="BuscarID" method="get" class="row g-2 align-items-center mb-3">
+                <div class="col-auto"><label class="col-form-label">Id</label></div>
+                    <div class="col">
+                        <input type="text" name="idBuscar" required class="form-control">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-dark">BUSCAR</button>
+                    </div>
+                </form>
+                <small class="text-danger">@TempData["Error"]</small>
+            </div> 
+
+        <fieldset disabled="@(Model == null ? "disabled" : null)">
+            <form asp-controller="Home" asp-action="Actualizar" method="post">
+                <input type="hidden" name="Id" value="@Model?.Id" />
+                <p class="mb-3">Id: <strong>@(Model?.Id)</strong></p>
+                <p class="mb-3">Tipo: <strong>@(Model?.Tipo)</strong></p>
+
+                <div class="mb-3">
+                    <label class="form-label d-block">Salud</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Salud" value="true" checked="@(Model?.Salud == true)" required> 
+                        <label class="form-check-label">+</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="Salud" value="false" checked="@(Model?.Salud == false)"> 
+                        <label class="form-check-label">-</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" name="Nombre" class="form-control" required value="@Model?.Nombre">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Edad</label>
+                    <input type="number" name="Edad" class="form-control" required value="@Model?.Edad">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Peso</label>
+                    <input type="number" step="0.01" name="Peso" class="form-control" required value="@Model?.Peso">
+                </div>
+                @switch (Model?.Tipo)
+                {
+                    case "Ave":
+                        <div class="mb-3">
+                            <label class="form-label d-block">¿Puede volar?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="PuedeVolar" value="true" checked="@(Model?.PuedeVolar == true)" required> 
+                                <label class="form-check-label">Sí</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="PuedeVolar" value="false" checked="@(Model?.PuedeVolar == false)"> 
+                                <label class="form-check-label">No</label>
+                            </div>
+                        </div>
+                        break;
+
+                    case "Perro":
+                    break;
+                    case "Gato":
+                        <div class="mb-3">
+                            <label class="form-label d-block">¿Esterilizado?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="Esterilizado" value="true" checked="@(Model?.Esterilizado == true)" required> 
+                                <label class="form-check-label">Sí</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="Esterilizado" value="false" checked="@(Model?.Esterilizado == false)"> 
+                                <label class="form-check-label">No</label>
+                            </div>
+                        </div>
+                        break;
+
+                    case "Tortuga":
+                        break;
+                }
+                <button type="submit" class="btn btn-secondary w-100 fw-bold">ACTUALIZAR</button>
+            </form>
+        </fieldset>
+    </div>
+        
+</div>
+
+@section Scripts {
+<script>
+    const select  = document.getElementById('tipoReg');
+    const bloques = document.querySelectorAll('.campo-dinamico-Reg');
+    const comunes= document.getElementById('comunes');
+
+    function mostrar() {
+        comunes.classList.toggle('d-none', select.value === '');
+        bloques.forEach(function (bloque) {
+            const esElActivo = bloque.dataset.tipo === select.value;
+            bloque.classList.toggle('d-none', !esElActivo);
+
+            bloque.querySelectorAll('input').forEach(function (campo) {
+                campo.disabled = !esElActivo;
+            });
+        });
+    }
+
+    select.addEventListener('change', mostrar);
+    mostrar();
+
+</script>
+}

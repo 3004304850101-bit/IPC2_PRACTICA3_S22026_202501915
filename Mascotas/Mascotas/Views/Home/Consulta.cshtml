@@ -1,0 +1,103 @@
+@using TDA
+@model ListaMascota
+
+@{
+    ViewData["Title"] = "Consulta y Gestión";
+    Mascota? sel = ViewBag.Seleccionada as Mascota;
+}
+@if (TempData["Error"] != null)
+{
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+        <div class="alert alert-danger alert-dismissible fade show shadow" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+    </div>
+}
+<h2 class="mb-4 pb-2">CONSULTA</h2>
+
+<div class="row g-4">
+   
+    <div class="col-md-6 pe-md-4">
+        <h4 class="mb-3">LISTA MASCOTAS</h4>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" style="width: 20%;">id</th>
+                        <th scope="col" style="width: 40%;">tipo</th>
+                        <th scope="col" style="width: 40%;">nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   @for(int i=0; i< Model.ContarMascotas(); i++)
+                    {
+                        var m= Model.Obtener(i);
+                        if(m==null)
+                        {
+                            continue;
+                        }
+                        <tr>
+                            <td>@m.Id</td>
+                            <td>@m.GetType().Name</td>
+                            <td>@m.Nombre</td>
+                        </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-md-6 ps-md-4">
+        <h4 class=" mb-3">CONSULTAR</h4>
+        <form asp-action="Consulta" method="get">
+            <div class="mb-3">
+                <label class="form-label ">id</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Ingrese ID" name="idBuscar">
+                    <button type="submit" class="btn btn-outline-dark ">Buscar</button>
+                </div>
+                <small id="mensajeConsulta" class="form-text text-muted">Ingresar ID para consultar información</small>
+            </div>
+        </form>
+        <fieldset disabled="@(sel == null)">
+            
+            <div class="mb-3">
+                <textarea class="form-control" rows="6" readonly >
+                    @if(sel != null){
+                            <text>
+                                Id: @sel?.Id
+                                Tipo: @sel?.GetType().Name
+                                Nombre: @sel?.Nombre
+                                Edad: @sel?.Edad
+                                Peso: @sel?.Peso
+                            </text>
+                        }
+                </textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Calcular Dosis</label>
+                <form asp-controller="Home" asp-action="CalcularDosis" method="post">
+                    <div class="input-group">
+                     <input type="hidden" name="id" value="@sel?.Id" />
+                    <input type="number" class="form-control" placeholder="Ingrese Kg" required name="dosis_kg" required>
+                    <button type="submit" class="btn btn-dark ">Calcular</button>
+                </div>
+                </form>
+                
+                <br>
+                <h6>Dosis de la mascota:</h6>
+                @TempData["Dosis"]
+            </div>
+
+            <form asp-controller="Home" asp-action="Eliminar" method="post">
+                <div>
+                    <input type="hidden" name="id" value="@sel?.Id" />
+                    <button type="submit" class="btn btn-outline-danger w-100 py-2">Eliminar</button>
+                </div>
+            </form>  
+        </fieldset>
+    </div>
+</div>
